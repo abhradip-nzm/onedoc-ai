@@ -4,8 +4,8 @@ import { chatResponses, suggestedQ, detectIntent } from '../../data/simulationDa
 import { useApp } from '../../contexts/AppContext';
 
 const WELCOME = {
-  en: "Hello! I'm **OneDoc AI**, your intelligent analytics companion.\n\nI have real-time access to data across **27 outlets, 106K+ clients** and all revenue, satisfaction and predictive metrics.\n\nAsk me anything — in English or 中文.",
-  zh: "您好！我是 **OneDoc AI**，您的智能分析助手。\n\n我可以实时访问 **27家门店、10.6万+客户** 以及所有收入、满意度和预测指标的数据。\n\n请用中文或英文提问。",
+  en: "Hello! I'm **Aryabhatta AI**, your intelligent analytics companion.\n\nI have real-time access to data across **27 outlets, 106K+ clients** and all revenue, satisfaction and predictive metrics.\n\nAsk me anything — in English or 中文.",
+  zh: "您好！我是 **Aryabhatta AI**，您的智能分析助手。\n\n我可以实时访问 **27家门店、10.6万+客户** 以及所有收入、满意度和预测指标的数据。\n\n请用中文或英文提问。",
 };
 
 const INTENT_CHIPS = {
@@ -134,7 +134,7 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="page-body" style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - var(--topbar-h))' }}>
+    <div className="chat-page">
       {/* Header */}
       <div style={{ marginBottom: 16, flexShrink: 0 }}>
         <div className="badge badge-violet" style={{ marginBottom: 8, display: 'inline-flex', gap: 5 }}>
@@ -203,7 +203,7 @@ export default function Chatbot() {
                   fontSize: 9.5, color: 'var(--text-tertiary)', marginBottom: 4,
                   fontFamily: 'var(--font-mono)', textAlign: msg.role === 'user' ? 'right' : 'left',
                 }}>
-                  {msg.role === 'ai' ? `ONEDOC AI${msg.intent ? ` · ${msg.intent.toUpperCase()}` : ''}` : 'YOU'}
+                  {msg.role === 'ai' ? `ARYABHATTA AI${msg.intent ? ` · ${msg.intent.toUpperCase()}` : ''}` : t('YOU', '您')}
                   {' · '}{msg.ts.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>
 

@@ -11,13 +11,14 @@ export const PAGES = [
 ];
 
 const INITIAL_NOTIFS = [
-  { id: 1, type: 'alert',   read: false, time: '2m',  msg: 'Pigmentation complaint spike — KL region (+3.2×)' },
+  { id: 1, type: 'alert',   read: false, time: '2m',  msg: 'Data anomaly detected — Revenue spike (+3.2×)' },
   { id: 2, type: 'insight', read: false, time: '14m', msg: 'Revenue forecast upgraded: +12.3% YTD' },
-  { id: 3, type: 'rca',     read: false, time: '1h',  msg: 'New RCA resolved: Cheras satisfaction drop' },
+  { id: 3, type: 'rca',     read: false, time: '1h',  msg: 'New RCA resolved: Satisfaction drop case' },
   { id: 4, type: 'model',   read: true,  time: '3h',  msg: 'Predictive model retrained — accuracy 87%' },
 ];
 
 export function AppProvider({ children }) {
+  const [appView, setAppView]   = useState('landing'); // 'landing' | 'login' | 'app'
   const [page, setPage]         = useState('dashboard');
   const [lang, setLang]         = useState('en');
   const [notifs, setNotifs]     = useState(INITIAL_NOTIFS);
@@ -30,8 +31,11 @@ export function AppProvider({ children }) {
 
   const t = useCallback((en, zh) => lang === 'zh' ? zh : en, [lang]);
 
+  const navigate = useCallback((view) => setAppView(view), []);
+
   return (
     <AppContext.Provider value={{
+      appView, setAppView, navigate,
       page, setPage,
       lang, setLang,
       notifs, markAllRead, unread,

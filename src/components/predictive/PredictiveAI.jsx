@@ -22,7 +22,7 @@ function ConfidenceBar({ value, color = 'var(--violet-4)' }) {
   );
 }
 
-function MLModelCard({ model }) {
+function MLModelCard({ model, t }) {
   return (
     <div className="card" style={{ padding:18 }}>
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:12 }}>
@@ -32,13 +32,13 @@ function MLModelCard({ model }) {
         </div>
         <span className={`badge ${model.status==='live'?'badge-emerald':'badge-amber'}`} style={{ flexShrink:0 }}>
           <div className={`pulse ${model.status==='live'?'pulse-green':'pulse-amber'}`} style={{ width:6,height:6 }} />
-          {model.status==='live'?'LIVE':'TRAINING'}
+          {model.status==='live' ? t('LIVE','运行中') : t('TRAINING','训练中')}
         </span>
       </div>
 
       <div style={{ marginBottom:10 }}>
         <div style={{ display:'flex', justifyContent:'space-between', fontSize:11, marginBottom:5, color:'var(--text-tertiary)' }}>
-          <span>Accuracy</span>
+          <span>{t('Accuracy','准确率')}</span>
           <span style={{ fontFamily:'var(--font-mono)', color:'var(--violet-5)', fontWeight:700 }}>{model.accuracy}%</span>
         </div>
         <ConfidenceBar value={model.accuracy} />
@@ -50,7 +50,7 @@ function MLModelCard({ model }) {
         ))}
       </div>
       <div style={{ display:'flex', justifyContent:'space-between', marginTop:10, fontSize:10.5, color:'var(--text-tertiary)' }}>
-        <span>Last trained: {model.lastTrained}</span>
+        <span>{t('Last trained','上次训练')}: {model.lastTrained}</span>
         <span style={{ fontFamily:'var(--font-mono)' }}>⚡ {model.latency}</span>
       </div>
     </div>
@@ -147,7 +147,7 @@ export default function PredictiveAI() {
             <div style={{ fontFamily:'var(--font-display)', fontSize:20, fontWeight:800, color:kpi.color, marginBottom:8, lineHeight:1 }}>
               {kpi.val}
             </div>
-            <div style={{ fontSize:9.5, color:'var(--text-tertiary)', marginBottom:6, fontFamily:'var(--font-mono)' }}>CONFIDENCE</div>
+            <div style={{ fontSize:9.5, color:'var(--text-tertiary)', marginBottom:6, fontFamily:'var(--font-mono)' }}>{t('CONFIDENCE','置信度')}</div>
             <ConfidenceBar value={kpi.conf} color={kpi.color} />
             {kpi.delta && (
               <div style={{ marginTop:6, fontSize:10.5, fontFamily:'var(--font-mono)', color:kpi.trend==='up'?'var(--emerald-4)':'var(--rose-4)', fontWeight:700 }}>
@@ -249,7 +249,7 @@ export default function PredictiveAI() {
         <div>
           <div className="section-title" style={{ marginBottom:12 }}>{t('Active ML Models','活跃ML模型')}</div>
           <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-            {mlModels.map(m => <MLModelCard key={m.name} model={m} />)}
+            {mlModels.map(m => <MLModelCard key={m.name} model={m} t={t} />)}
           </div>
         </div>
 

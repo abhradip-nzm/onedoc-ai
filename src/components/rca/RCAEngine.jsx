@@ -4,17 +4,17 @@ import { rcaIncidents } from '../../data/simulationData';
 import { useApp } from '../../contexts/AppContext';
 
 const SEV = {
-  high:   { cls:'badge-rose',    label:'HIGH',        icon:'🔴' },
-  medium: { cls:'badge-amber',   label:'MEDIUM',      icon:'🟡' },
-  low:    { cls:'badge-emerald', label:'LOW',          icon:'🟢' },
+  high:   { cls:'badge-rose',    en:'HIGH',        zh:'高',   icon:'🔴' },
+  medium: { cls:'badge-amber',   en:'MEDIUM',      zh:'中',   icon:'🟡' },
+  low:    { cls:'badge-emerald', en:'LOW',          zh:'低',   icon:'🟢' },
 };
 const STAT = {
-  'resolved':    { cls:'badge-emerald', icon:CheckCircle, label:'Resolved'    },
-  'in-progress': { cls:'badge-amber',   icon:Clock,       label:'In Progress' },
-  'monitoring':  { cls:'badge-cyan',    icon:Eye,         label:'Monitoring'  },
+  'resolved':    { cls:'badge-emerald', icon:CheckCircle, en:'Resolved',    zh:'已解决' },
+  'in-progress': { cls:'badge-amber',   icon:Clock,       en:'In Progress', zh:'进行中' },
+  'monitoring':  { cls:'badge-cyan',    icon:Eye,         en:'Monitoring',  zh:'监控中' },
 };
 
-function IncidentCard({ inc, active, onClick }) {
+function IncidentCard({ inc, active, onClick, t }) {
   const sev = SEV[inc.severity];
   const stat = STAT[inc.status];
   const StatIcon = stat.icon;
@@ -28,28 +28,28 @@ function IncidentCard({ inc, active, onClick }) {
         <div style={{ flex:1, minWidth:0 }}>
           <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:4, flexWrap:'wrap' }}>
             <span style={{ fontSize:10, fontFamily:'var(--font-mono)', color:'var(--text-tertiary)' }}>{inc.id}</span>
-            <span className={`badge ${sev.cls}`} style={{ fontSize:9.5 }}>{sev.icon} {sev.label}</span>
+            <span className={`badge ${sev.cls}`} style={{ fontSize:9.5 }}>{sev.icon} {t(sev.en, sev.zh)}</span>
           </div>
           <div style={{ fontWeight:700, fontSize:13, lineHeight:1.35 }}>{inc.title}</div>
           <div style={{ fontSize:10.5, color:'var(--text-tertiary)', marginTop:2 }}>📍 {inc.outlet} · {inc.date}</div>
         </div>
         <span className={`badge ${stat.cls}`} style={{ flexShrink:0, marginLeft:8, display:'flex', alignItems:'center', gap:4 }}>
-          <StatIcon size={10} />{stat.label}
+          <StatIcon size={10} />{t(stat.en, stat.zh)}
         </span>
       </div>
       <div style={{ display:'flex', gap:14 }}>
         <div>
           <div style={{ fontFamily:'var(--font-display)', fontSize:18, fontWeight:800, color:'var(--rose-4)', lineHeight:1 }}>{inc.affectedClients}</div>
-          <div style={{ fontSize:9.5, color:'var(--text-tertiary)' }}>{('affected')}</div>
+          <div style={{ fontSize:9.5, color:'var(--text-tertiary)' }}>{t('affected','受影响')}</div>
         </div>
         <div>
           <div style={{ fontFamily:'var(--font-display)', fontSize:18, fontWeight:800, color:'var(--violet-5)', lineHeight:1 }}>{inc.rootCauses.length}</div>
-          <div style={{ fontSize:9.5, color:'var(--text-tertiary)' }}>root causes</div>
+          <div style={{ fontSize:9.5, color:'var(--text-tertiary)' }}>{t('root causes','根因')}</div>
         </div>
         {inc.resolvedIn && (
           <div>
             <div style={{ fontFamily:'var(--font-display)', fontSize:18, fontWeight:800, color:'var(--emerald-4)', lineHeight:1 }}>{inc.resolvedIn}</div>
-            <div style={{ fontSize:9.5, color:'var(--text-tertiary)' }}>resolved in</div>
+            <div style={{ fontSize:9.5, color:'var(--text-tertiary)' }}>{t('resolved in','解决耗时')}</div>
           </div>
         )}
       </div>
@@ -145,6 +145,7 @@ export default function RCAEngine() {
               inc={inc}
               active={sel?.id === inc.id}
               onClick={()=>{setSel(inc); setTab('analysis');}}
+              t={t}
             />
           ))}
         </div>
@@ -155,13 +156,13 @@ export default function RCAEngine() {
             {/* Tabs */}
             <div className="tabs-bar">
               {[
-                { id:'analysis',   label:'🔍 Analysis'   },
-                { id:'fishbone',   label:'🐟 Fishbone'   },
-                { id:'timeline',   label:'📅 Timeline'   },
-                { id:'resolution', label:'✅ Resolution' },
+                { id:'analysis',   en:'🔍 Analysis',   zh:'🔍 分析'   },
+                { id:'fishbone',   en:'🐟 Fishbone',   zh:'🐟 鱼骨图' },
+                { id:'timeline',   en:'📅 Timeline',   zh:'📅 时间线' },
+                { id:'resolution', en:'✅ Resolution',  zh:'✅ 解决方案' },
               ].map(tb=>(
                 <button key={tb.id} className={`tab-btn ${tab===tb.id?'active':''}`} onClick={()=>setTab(tb.id)}>
-                  {tb.label}
+                  {t(tb.en, tb.zh)}
                 </button>
               ))}
             </div>
@@ -175,7 +176,7 @@ export default function RCAEngine() {
                     <Brain size={15} color="white" />
                   </div>
                   <div>
-                    <div style={{ fontWeight:700, fontSize:11.5, color:'var(--violet-5)', marginBottom:3, fontFamily:'var(--font-mono)' }}>AI ROOT CAUSE ANALYSIS</div>
+                    <div style={{ fontWeight:700, fontSize:11.5, color:'var(--violet-5)', marginBottom:3, fontFamily:'var(--font-mono)' }}>{t('AI ROOT CAUSE ANALYSIS','AI根因分析')}</div>
                     <div style={{ fontSize:12.5, color:'var(--text-secondary)', lineHeight:1.65 }}>
                       {lang==='zh' ? sel.aiInsightZh : sel.aiInsight}
                     </div>
@@ -239,9 +240,9 @@ export default function RCAEngine() {
             {/* ── FISHBONE ── */}
             {tab==='fishbone' && (
               <div className="card" style={{ padding:22 }}>
-                <div style={{ fontWeight:700, fontSize:15, marginBottom:3 }}>Ishikawa Fishbone Diagram</div>
+                <div style={{ fontWeight:700, fontSize:15, marginBottom:3 }}>{t('Ishikawa Fishbone Diagram','石川鱼骨图')}</div>
                 <div style={{ fontSize:11.5, color:'var(--text-tertiary)', marginBottom:20 }}>
-                  AI-generated cause-effect analysis · {sel.title}
+                  {t('AI-generated cause-effect analysis','AI生成因果分析')} · {sel.title}
                 </div>
 
                 {/* Effect box */}
@@ -289,10 +290,10 @@ export default function RCAEngine() {
                 </div>
                 <div style={{ display:'flex', gap:16, justifyContent:'center', marginTop:14, fontSize:11, color:'var(--text-tertiary)' }}>
                   <div style={{ display:'flex', alignItems:'center', gap:5 }}>
-                    <div style={{ width:8,height:8,borderRadius:'50%',background:'var(--emerald-4)' }} /> AI Confirmed
+                    <div style={{ width:8,height:8,borderRadius:'50%',background:'var(--emerald-4)' }} /> {t('AI Confirmed','AI已确认')}
                   </div>
                   <div style={{ display:'flex', alignItems:'center', gap:5 }}>
-                    <div style={{ width:8,height:8,borderRadius:'50%',background:'var(--text-tertiary)' }} /> Suspected
+                    <div style={{ width:8,height:8,borderRadius:'50%',background:'var(--text-tertiary)' }} /> {t('Suspected','疑似')}
                   </div>
                 </div>
               </div>
@@ -339,7 +340,7 @@ export default function RCAEngine() {
                       </div>
                     </div>
                     <span className={`badge ${r.done?'badge-emerald':'badge-amber'}`} style={{ fontSize:9.5, flexShrink:0 }}>
-                      {r.done?'Done':'Pending'}
+                      {r.done ? t('Done','完成') : t('Pending','待处理')}
                     </span>
                   </div>
                 ))}

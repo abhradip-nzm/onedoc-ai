@@ -70,11 +70,11 @@ export default function Sidebar() {
         </div>
         {!c && (
           <div style={{ overflow: 'hidden' }}>
-            <div style={{ fontWeight: 800, fontSize: 15, letterSpacing: '-0.02em', lineHeight: 1.1, whiteSpace: 'nowrap' }}>
-              OneDoc
+            <div style={{ fontWeight: 800, fontSize: 15, letterSpacing: '-0.03em', lineHeight: 1.1, whiteSpace: 'nowrap' }}>
+              Aryabhatta<span style={{ color: 'var(--violet-5)' }}>.ai</span>
             </div>
             <div className="t-label" style={{ lineHeight: 1, whiteSpace: 'nowrap' }}>
-              AI INTELLIGENCE
+              {t('AI ANALYTICS', 'AI 数据分析')}
             </div>
           </div>
         )}
@@ -93,10 +93,10 @@ export default function Sidebar() {
           <div className="pulse pulse-green" />
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--emerald-4)', lineHeight: 1.2 }}>
-              4 AI Models Active
+              {t('4 AI Models Active', '4个AI模型运行中')}
             </div>
             <div style={{ fontSize: 10, color: 'var(--text-tertiary)', marginTop: 1 }}>
-              Avg latency 42ms · Live
+              {t('Avg latency 42ms · Live', '平均延迟 42ms · 实时')}
             </div>
           </div>
         </div>

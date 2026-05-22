@@ -8,10 +8,15 @@ import Analytics from './components/analytics/Analytics';
 import PredictiveAI from './components/predictive/PredictiveAI';
 import RCAEngine from './components/rca/RCAEngine';
 import Chatbot from './components/chatbot/Chatbot';
+import LandingPage from './components/landing/LandingPage';
+import LoginPage from './components/auth/LoginPage';
 import './index.css';
 
 function AppShell() {
-  const { page, sideCollapsed } = useApp();
+  const { appView, page, sideCollapsed } = useApp();
+
+  if (appView === 'landing') return <LandingPage />;
+  if (appView === 'login')   return <LoginPage />;
 
   const renderPage = () => {
     switch (page) {
@@ -26,10 +31,8 @@ function AppShell() {
 
   return (
     <>
-      {/* Atmospheric backgrounds */}
       <div className="ai-canvas" />
       <div className="grid-canvas" />
-
       <div className="app-shell">
         <Sidebar />
         <main className={`app-main ${sideCollapsed ? 'sidebar-collapsed' : ''}`}>

@@ -23,9 +23,9 @@ const heatColor = (v, max=115) => {
 };
 
 const NPS_SEGS = [
-  { label:'Promoters (9–10)', pct:58, color:'#34d399' },
-  { label:'Passives (7–8)',   pct:28, color:'#a78bfa' },
-  { label:'Detractors (0–6)',  pct:14, color:'#fb7185' },
+  { en:'Promoters (9–10)', zh:'推荐者 (9–10)', pct:58, color:'#34d399' },
+  { en:'Passives (7–8)',   zh:'中立者 (7–8)',  pct:28, color:'#a78bfa' },
+  { en:'Detractors (0–6)', zh:'批评者 (0–6)',   pct:14, color:'#fb7185' },
 ];
 
 const DEMO_AGE = [
@@ -36,11 +36,11 @@ const DEMO_AGE = [
 ];
 
 const SENTIMENT = [
-  { label:'Very Positive', emoji:'😍', pct:62, color:'#34d399' },
-  { label:'Positive',      emoji:'😊', pct:24, color:'#8b5cf6' },
-  { label:'Neutral',       emoji:'😐', pct:9,  color:'#fbbf24' },
-  { label:'Negative',      emoji:'😞', pct:3,  color:'#fb7185' },
-  { label:'Very Negative', emoji:'😡', pct:2,  color:'#ef4444' },
+  { en:'Very Positive', zh:'非常正面', emoji:'😍', pct:62, color:'#34d399' },
+  { en:'Positive',      zh:'正面',     emoji:'😊', pct:24, color:'#8b5cf6' },
+  { en:'Neutral',       zh:'中性',     emoji:'😐', pct:9,  color:'#fbbf24' },
+  { en:'Negative',      zh:'负面',     emoji:'😞', pct:3,  color:'#fb7185' },
+  { en:'Very Negative', zh:'非常负面', emoji:'😡', pct:2,  color:'#ef4444' },
 ];
 
 export default function Analytics() {
@@ -125,13 +125,13 @@ export default function Analytics() {
 
             {/* NPS */}
             <div className="card" style={{ padding:22 }}>
-              <div className="section-title" style={{ marginBottom:4 }}>NPS Distribution</div>
+              <div className="section-title" style={{ marginBottom:4 }}>{t('NPS Distribution','NPS分布')}</div>
               <div className="section-sub" style={{ marginBottom:18 }}>{t('Net Promoter Score breakdown','净推荐值分布')}</div>
               <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
                 {NPS_SEGS.map(s => (
-                  <div key={s.label}>
+                  <div key={s.en}>
                     <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6 }}>
-                      <span style={{ fontSize:12, fontWeight:500 }}>{s.label}</span>
+                      <span style={{ fontSize:12, fontWeight:500 }}>{t(s.en, s.zh)}</span>
                       <span style={{ fontFamily:'var(--font-mono)', fontWeight:700, color:s.color, fontSize:13 }}>{s.pct}%</span>
                     </div>
                     <div className="progress-track">
@@ -147,7 +147,7 @@ export default function Analytics() {
               }}>
                 <div style={{ fontFamily:'var(--font-display)', fontSize:48, fontWeight:900, color:'var(--violet-4)', lineHeight:1 }}>72</div>
                 <div style={{ fontSize:11.5, color:'var(--text-tertiary)', marginTop:4 }}>
-                  Overall NPS · <span style={{ color:'var(--emerald-4)' }}>+5 vs Q3</span>
+                  {t('Overall NPS','综合NPS')} · <span style={{ color:'var(--emerald-4)' }}>+5 vs Q3</span>
                 </div>
               </div>
             </div>
@@ -161,11 +161,11 @@ export default function Analytics() {
                 <div className="section-sub">{t('Bookings per hour by day-of-week · darker = more sessions','每小时预约量 · 颜色越深代表越多')}</div>
               </div>
               <div style={{ display:'flex', alignItems:'center', gap:6, fontSize:10, color:'var(--text-tertiary)' }}>
-                <span>Low</span>
+                <span>{t('Low','低')}</span>
                 {[0.1,0.3,0.5,0.7,0.9].map(v=>(
                   <div key={v} style={{ width:18, height:12, borderRadius:3, background:heatColor(v*115) }} />
                 ))}
-                <span>High</span>
+                <span>{t('High','高')}</span>
               </div>
             </div>
             <div style={{ overflowX:'auto' }}>
@@ -269,10 +269,10 @@ export default function Analytics() {
           <div className="card" style={{ padding:22 }}>
             <div className="section-title" style={{ marginBottom:16 }}>{t('Client Demographics','客户人口统计')}</div>
             <div style={{ display:'flex', gap:12, marginBottom:20 }}>
-              {[{l:'Female',pct:74,col:'#e879f9'},{l:'Male',pct:26,col:'#8b5cf6'}].map(g=>(
-                <div key={g.l} style={{ flex:1, padding:14, background:'var(--bg-elevated)', borderRadius:10, textAlign:'center' }}>
+              {[{en:'Female',zh:'女性',pct:74,col:'#e879f9'},{en:'Male',zh:'男性',pct:26,col:'#8b5cf6'}].map(g=>(
+                <div key={g.en} style={{ flex:1, padding:14, background:'var(--bg-elevated)', borderRadius:10, textAlign:'center' }}>
                   <div style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:800, color:g.col }}>{g.pct}%</div>
-                  <div style={{ fontSize:11, color:'var(--text-tertiary)', marginTop:2 }}>{g.l}</div>
+                  <div style={{ fontSize:11, color:'var(--text-tertiary)', marginTop:2 }}>{t(g.en, g.zh)}</div>
                 </div>
               ))}
             </div>
@@ -308,13 +308,13 @@ export default function Analytics() {
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8 }}>
                 {[
-                  { l:'Revenue', v:`RM ${(o.rev/1000).toFixed(0)}K`, col:'var(--violet-5)' },
-                  { l:'Rating',  v:`${o.sat} ★`, col:o.sat>=4.7?'var(--emerald-4)':o.sat>=4.5?'var(--amber-4)':'var(--rose-4)' },
-                  { l:'Growth',  v:`${o.growth>0?'+':''}${o.growth}%`, col:o.growth>=0?'var(--emerald-4)':'var(--rose-4)' },
+                  { en:'Revenue', zh:'收入', v:`RM ${(o.rev/1000).toFixed(0)}K`, col:'var(--violet-5)' },
+                  { en:'Rating',  zh:'评分', v:`${o.sat} ★`, col:o.sat>=4.7?'var(--emerald-4)':o.sat>=4.5?'var(--amber-4)':'var(--rose-4)' },
+                  { en:'Growth',  zh:'增长', v:`${o.growth>0?'+':''}${o.growth}%`, col:o.growth>=0?'var(--emerald-4)':'var(--rose-4)' },
                 ].map(m=>(
-                  <div key={m.l} style={{ textAlign:'center', padding:'8px 4px', background:'var(--bg-elevated)', borderRadius:8 }}>
+                  <div key={m.en} style={{ textAlign:'center', padding:'8px 4px', background:'var(--bg-elevated)', borderRadius:8 }}>
                     <div style={{ fontFamily:'var(--font-mono)', fontSize:13, fontWeight:700, color:m.col }}>{m.v}</div>
-                    <div style={{ fontSize:9.5, color:'var(--text-tertiary)', marginTop:2 }}>{m.l}</div>
+                    <div style={{ fontSize:9.5, color:'var(--text-tertiary)', marginTop:2 }}>{t(m.en, m.zh)}</div>
                   </div>
                 ))}
               </div>
@@ -347,11 +347,11 @@ export default function Analytics() {
           <div className="card" style={{ padding:22 }}>
             <div className="section-title" style={{ marginBottom:16 }}>{t('AI Sentiment Analysis','AI情感分析')}</div>
             {SENTIMENT.map(s=>(
-              <div key={s.label} style={{ display:'flex', alignItems:'center', gap:10, marginBottom:14 }}>
+              <div key={s.en} style={{ display:'flex', alignItems:'center', gap:10, marginBottom:14 }}>
                 <span style={{ fontSize:20 }}>{s.emoji}</span>
                 <div style={{ flex:1 }}>
                   <div style={{ display:'flex', justifyContent:'space-between', marginBottom:5 }}>
-                    <span style={{ fontSize:12 }}>{s.label}</span>
+                    <span style={{ fontSize:12 }}>{t(s.en, s.zh)}</span>
                     <span style={{ fontFamily:'var(--font-mono)', color:s.color, fontWeight:700, fontSize:12 }}>{s.pct}%</span>
                   </div>
                   <div className="progress-track" style={{ height:5 }}>

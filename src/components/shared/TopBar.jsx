@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../contexts/AppContext';
-import { Search, Cpu, RefreshCw, Download, ChevronDown } from 'lucide-react';
+import { Search, Cpu, RefreshCw, Download, LogOut } from 'lucide-react';
 
 const PAGE_META = {
   dashboard:  { en: 'AI Intelligence Dashboard',  zh: '智能仪表板',     sub: 'Real-time · 27 outlets · Live AI' },
@@ -11,7 +11,7 @@ const PAGE_META = {
 };
 
 export default function TopBar() {
-  const { page, lang, t } = useApp();
+  const { page, lang, t, navigate } = useApp();
   const [searchVal, setSearchVal] = useState('');
   const meta = PAGE_META[page] || PAGE_META.dashboard;
   const [refreshing, setRefreshing] = useState(false);
@@ -112,20 +112,30 @@ export default function TopBar() {
           <div className="pulse pulse-green" style={{ width: 6, height: 6 }} />
         </div>
 
+        {/* Logout */}
+        <button
+          onClick={() => navigate('landing')}
+          className="btn btn-subtle btn-icon"
+          title={t('Sign out', '退出登录')}
+        >
+          <LogOut size={14} />
+        </button>
+
         {/* Avatar */}
         <div style={{
           width: 34, height: 34,
           borderRadius: 10,
           background: 'var(--grad-primary)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 12,
+          fontSize: 11,
           fontWeight: 800,
           color: 'white',
           cursor: 'pointer',
           boxShadow: 'var(--shadow-glow-xs)',
           flexShrink: 0,
+          letterSpacing: '-0.03em',
         }}>
-          OD
+          A.ai
         </div>
       </div>
     </header>
